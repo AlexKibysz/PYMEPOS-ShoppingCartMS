@@ -1,0 +1,25 @@
+### DotnetCore template
+# .NET Core build folders
+bin/
+obj/
+
+# Common node modules locations
+/node_modules
+/wwwroot/node_modules
+
+#Default ignored files
+/shelf/
+/workspace.xml
+
+# Rider ignored files
+.idea/
+/modules.xml
+/projectSettingsUpdater.xml
+/contentModel.xml
+/.idea.PYMEPOS-ShoppingCartMS.iml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
