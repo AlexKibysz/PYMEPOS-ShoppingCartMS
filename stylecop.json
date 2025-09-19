@@ -1,0 +1,48 @@
+{
+  "settings": {
+    "documentationRules": {
+      "companyName": "MiEmpresa",
+      "copyrightText": "Copyright © MiEmpresa 2025",
+      "xmlHeader": true,
+      "documentExposedElements": true,
+      "documentInternalElements": false,
+      "documentPrivateElements": false,
+      "documentInterfaces": true,
+      "documentPrivateFields": false
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace",
+      "systemUsingDirectivesFirst": true,
+      "elementOrder": [
+        "kind",
+        "accessibility",
+        "constant",
+        "field",
+        "constructor",
+        "property",
+        "method",
+        "event"
+      ]
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": false,
+      "allowedHungarianPrefixes": [],
+      "includeInferredTupleElementNames": true,
+      "includeInferredAnonymousTypeMemberNames": true
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require",
+      "allowConsecutiveUsings": false,
+      "allowConsecutiveBlankLines": false
+    },
+    "maintainabilityRules": {
+      "allowMembersWithMultipleStatements": true,
+      "maxLineLength": 120
+    },
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": true,
+      "allowDefaultExpression": true,
+      "allowNullLiteral": true
+    }
+  }
+}

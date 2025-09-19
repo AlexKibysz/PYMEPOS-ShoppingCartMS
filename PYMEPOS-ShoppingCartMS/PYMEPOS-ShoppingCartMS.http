@@ -3,4 +3,3 @@
 GET {{PYMEPOS_ShoppingCartMS_HostAddress}}/weatherforecast/
 Accept: application/json
 
-###

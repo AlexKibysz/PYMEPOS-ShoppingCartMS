@@ -1,12 +1,30 @@
+// <copyright file="shoppingCart.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+namespace PYMEPOS_ShoppingCartMS.Models;
+
 using System;
-using PYMEPOS_ShoppingCartMS.DTO;
 
-namespace PYMEPOS_ShoppingCartMS;
-
-public class shoppingCart
+/// <summary>
+/// Represents a shopping cart containing products.
+/// </summary>
+public class ShoppingCart
 {
-   public Guid Id { get; set; }
+    /// <summary>
+    /// Gets or sets the unique identifier for the shopping cart.
+    /// </summary>
+    public Guid Id
+    {
+        get; set;
+    }
 
+    /// <summary>
+    /// Gets or sets the list of products in the shopping cart.
+    /// </summary>
+    public List<Product> Products
+    {
+        get; set;
+    }
 
-   public List<Product> Products { get; set; }
+    = new List<Product>();
 }
