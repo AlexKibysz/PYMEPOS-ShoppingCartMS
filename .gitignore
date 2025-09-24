@@ -23,3 +23,5 @@ obj/
 /dataSources/
 /dataSources.local.xml
 
+
+PYMEPOS-ShoppingCartMS/appsettings.Development.json

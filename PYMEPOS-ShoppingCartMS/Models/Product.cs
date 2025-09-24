@@ -25,4 +25,6 @@ public class Product
     {
         get; set;
     }
+
+    public ICollection<ShoppingCart> ShoppingCarts { get; set; } = new List<ShoppingCart>();
 }

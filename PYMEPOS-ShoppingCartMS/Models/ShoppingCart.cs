@@ -21,7 +21,7 @@ public class ShoppingCart
     /// <summary>
     /// Gets or sets the list of products in the shopping cart.
     /// </summary>
-    public List<Product> Products
+    public ICollection<Product> Products
     {
         get; set;
     }
