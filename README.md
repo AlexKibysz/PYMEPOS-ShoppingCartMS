@@ -99,25 +99,9 @@ Estaba entre crear la carpeta Dto en vez de Models, pero en este caso estas clas
 ### Configuracion de Polly
 
 
-## Bases de Datos
 
-```sh
- podman pod create --name dev-sql-pod -p 1433:1433 
-```
-
-
-```sh
-podman run -dt \                                      
-  --pod dev-sql-pod \
-  --name sql-server \
-  -e 'ACCEPT_EULA=Y' \
-  -e 'SA_PASSWORD=TuPassword123!' \
-  -v sqlserver-data:/var/opt/mssql \
-  mcr.microsoft.com/mssql/server:2022-latest
-
-```
 ### Ponerle un volumen para persistencia de datos
-
+por ahora no necesito
 
 ## Configuracion de EF Core
 ### Crear y Configurar el Context Model
@@ -147,7 +131,7 @@ public class ShoppingCartContext : DbContext //hago que ShoppingCartContext impl
 }
 ```
 
-Ahora donde ponemos nuestra connection string?
+#### Manejo de ConnectionString y Secrets
 
 Vamos a agregarla al appsetings primero
 ```json
@@ -155,7 +139,6 @@ Vamos a agregarla al appsetings primero
     "DefaultConnection": "Server=localhost,1433;Database=MiDb;User Id=sa;Password=TuPassword123!;"
   }
 ```
-
 
 Esto lo vamos a hacer en el Program.cs ya que si vemos en el constructor inyecta la configuracion
 ```cs
@@ -165,4 +148,34 @@ builder.Services.AddDbContext<ShoppingCartContext>(options =>
 Como vemos el program.cs tiene el builder.Configuration.GetConnectionString("DefaultConnection") que toma los datos del appsetings 
 
 
+##### Uso de dotnet-secrets
+Nuestra forma utilizando appsetings no es tan segura ni preparada para un ambiente productivo por lo que vamos a agregar el uso de dotnet-secrets
+
+*Set a user secrets ID to enable secret storage*
+```sh
+dotnet user-secrets init
+```
+
+
+*Secret Desarrollo*
+```sh 
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost,1433;Database=MiDb;User Id=sa;Password=TuPassword123!;TrustServerCertificate=True;
+```
+
 ## Docker, Kubernetes y Compose
+### Bases de Datos
+```sh
+ podman pod create --name dev-sql-pod -p 1433:1433 
+```
+
+
+```sh
+podman run -dt \                                      
+  --pod dev-sql-pod \
+  --name sql-server \
+  -e 'ACCEPT_EULA=Y' \
+  -e 'SA_PASSWORD=TuPassword123!' \
+  -v sqlserver-data:/var/opt/mssql \
+  mcr.microsoft.com/mssql/server:2022-latest
+
+```Server=localhost,1433;Database=MiDb;User Id=sa;Password=TuPassword123!;TrustServerCertificate=True;

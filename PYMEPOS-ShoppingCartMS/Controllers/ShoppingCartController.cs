@@ -3,8 +3,11 @@
 // </copyright>
 namespace PYMEPOS_ShoppingCartMS.Controllers;
 
+using System.Data;
+
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using PYMEPOS_ShoppingCartMS.Models;
 
@@ -57,5 +60,21 @@ public class ShoppingCartController : Controller
         });
     }
 
+    [HttpGet("{cartId}")]
+    public async IActionResult GetCardId(Guid cartId)
+    {
+        var cart = await _context.ShoppingCartItems
+        .Include(c => c.Products)
+        .FirstOrDefaultAsync(c => c.Id == cartId);
 
+        if (cart.Id != null)
+        {
+            return Ok(cart);
+        }
+        else
+        {
+            return NotFound();
+        }
+
+    }
 }
