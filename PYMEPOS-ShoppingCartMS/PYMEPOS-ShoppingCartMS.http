@@ -1,5 +1,37 @@
 @PYMEPOS_ShoppingCartMS_HostAddress = http://localhost:5007
+@cartId = 123
 
-GET {{PYMEPOS_ShoppingCartMS_HostAddress}}/weatherforecast/
+### Crear carrito con productos de prueba
+POST {{PYMEPOS_ShoppingCartMS_HostAddress}}/shoppingcart/CreateCartWithTestProducts
 Accept: application/json
 
+### Obtener carrito por ID
+GET {{PYMEPOS_ShoppingCartMS_HostAddress}}/shoppingcart/{{cartId}}
+Accept: application/json
+
+### Crear carrito vacío
+POST {{PYMEPOS_ShoppingCartMS_HostAddress}}/shoppingcart
+Accept: application/json
+
+### Eliminar carrito
+DELETE {{PYMEPOS_ShoppingCartMS_HostAddress}}/shoppingcart/{{cartId}}
+Accept: application/json
+
+### Actualizar carrito
+PUT {{PYMEPOS_ShoppingCartMS_HostAddress}}/shoppingcart
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{cartId}}",
+  "products": [
+    {
+      "productId": 1,
+      "quantity": 2
+    },
+    {
+      "productId": 2,
+      "quantity": 3
+    }
+  ]
+}

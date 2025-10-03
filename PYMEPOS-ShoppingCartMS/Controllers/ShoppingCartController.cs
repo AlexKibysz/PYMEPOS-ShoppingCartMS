@@ -1,80 +1,94 @@
 // <copyright file="ShoppingCartController.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-namespace PYMEPOS_ShoppingCartMS.Controllers;
 
-using System.Data;
-
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 using PYMEPOS_ShoppingCartMS.Models;
 
-/// <summary>
-/// Controller for managing shopping cart operations.
-/// </summary>
-[Route("shoppingcart")]
-public class ShoppingCartController : Controller
-{
-    private readonly ShoppingCartContext _context;
+using PYMEPOS_ShoppingCartService.Contracts;
+using PYMEPOS_ShoppingCartService.Services;
 
-    public ShoppingCartController(ShoppingCartContext context)
+namespace PYMEPOS_ShoppingCartMS.Controllers;
+
+/// <summary>
+///     Controller for managing shopping cart operations.
+/// </summary>
+[ApiController]
+[Route("shoppingcart")]
+public class ShoppingCartController : ControllerBase
+{
+    private readonly IShoppingCartService _service;
+
+    public ShoppingCartController(ShoppingCartService service)
     {
-        _context = context;
+        _service = service;
     }
 
-
-
     /// <summary>
-    /// Adds products to the shopping cart.
+    ///     Adds products to the shopping cart.
     /// </summary>
     /// <param name="products">The list of products to add to the cart.</param>
     /// <returns>Nothing is returned as this method has a void return type.</returns>
-
     [HttpPost("CreateCartWithTestProducts")]
-    public IActionResult CreateCartWithTestProducts()
+    public async Task<IActionResult> CreateCartWithTestProducts()
     {
-        // Creamos los productos primero
-        var product1 = new Product { Quantity = 2 };
-        var product2 = new Product { Quantity = 3 };
+        var newShoppingCart = await _service.CreateCartWithTestProducts();
 
-        _context.Products.AddRange(product1, product2);
-
-        // Creamos el carrito y asignamos los productos
-        var cart = new ShoppingCart
-        {
-            Id = Guid.NewGuid(),
-            Products = new List<Product> { product1, product2 }
-        };
-
-        _context.ShoppingCartItems.Add(cart);
-
-        // Guardamos todo en la base de datos
-        _context.SaveChanges();
-
-        return Ok(new
-        {
-            CartId = cart.Id,
-            Products = cart.Products.Select(p => new { p.ProductId, p.Quantity })
-        });
+        return Ok(newShoppingCart);
     }
 
     [HttpGet("{cartId}")]
-    public async IActionResult GetCardId(Guid cartId)
+    public async Task<IActionResult> GetCartbyId(Guid cartId)
     {
-        var cart = await _context.ShoppingCartItems
-        .Include(c => c.Products)
-        .FirstOrDefaultAsync(c => c.Id == cartId);
+        if (cartId == Guid.Empty) return BadRequest("Invalid cart ID.");
 
-        if (cart.Id != null)
-        {
-            return Ok(cart);
-        }
-        else
-        {
-            return NotFound();
-        }
+        var cart = await _service.GetCartbyId(cartId);
 
+        if (cart.Id != null) return Ok(cart);
+
+        return NotFound();
+    }
+
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAllCartsAndProducts()
+    {
+        var cartWithProducts = await _service.GetAllCartsAndProducts();
+
+        if (cartWithProducts != null) return Ok(cartWithProducts);
+
+        return NotFound();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCart()
+    {
+        try
+        {
+            var cartId = await _service.CreateCart();
+
+            return Ok(cartId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [HttpDelete("{cartId}")]
+    public async Task<IActionResult> DeleteCart(Guid cartId)
+    {
+        var DeletedCartId = await _service.DeleteCart(cartId);
+
+        return Ok(DeletedCartId);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateCart(ShoppingCart cart)
+    {
+        await _service.UpdateCart(cart);
+
+        return NoContent();
     }
 }

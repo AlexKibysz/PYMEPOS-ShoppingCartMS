@@ -1,6 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+
+using PYMEPOS_ShoppingCartData;
+
+using PYMEPOS_ShoppingCartService.Contracts;
+using PYMEPOS_ShoppingCartService.Services;
+
 namespace PYMEPOS_ShoppingCartMS;
 
-using Microsoft.EntityFrameworkCore;
 public class Program
 {
     public static void Main(string[] args)
@@ -12,6 +18,11 @@ public class Program
         // Add services to the container.
         builder.Services.AddAuthorization();
 
+        builder.Services.AddTransient<IShoppingCartService, ShoppingCartService>();
+        builder.Services.AddTransient<IProductService, ProductService>();
+        builder.Services.AddScoped<IShoppingCartsData, ShoppingCartsData>();
+
+
         builder.Services.AddDbContext<ShoppingCartContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -21,10 +32,7 @@ public class Program
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-        }
+        if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
         app.UseHttpsRedirection();
 

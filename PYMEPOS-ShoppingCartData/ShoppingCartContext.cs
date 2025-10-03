@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using PYMEPOS_ShoppingCartMS.Models;
 
+namespace PYMEPOS_ShoppingCartMS;
 
 public class ShoppingCartContext : DbContext
 {
@@ -10,13 +11,15 @@ public class ShoppingCartContext : DbContext
     {
     }
 
-    public DbSet<ShoppingCart> ShoppingCartItems
+    public DbSet<ShoppingCart> ShoppingCarts
     {
-        get; set;
+        get;
+        set;
     }
 
     public DbSet<Product> Products
     {
-        get; set;
+        get;
+        set;
     }
 }

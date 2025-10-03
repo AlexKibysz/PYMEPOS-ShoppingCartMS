@@ -25,3 +25,4 @@ obj/
 
 
 PYMEPOS-ShoppingCartMS/appsettings.Development.json
+*.DotSettings.user
